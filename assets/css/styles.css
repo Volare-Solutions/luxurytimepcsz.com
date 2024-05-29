@@ -1211,7 +1211,7 @@ body.dark-theme {
   grid-template-columns: 1fr 1fr;
   gap: 3rem; /* Increase the gap between columns */
   align-items: start; /* Align items to the start for better visual structure */
-  margin-top: 6.5rem; /* Adjust for fixed header */
+  margin-top: 4rem; /* Adjust for fixed header */
 }
 
 .product__img-wrapper {
@@ -1373,4 +1373,17 @@ body.dark-theme {
   .product__details {
       order: 2;
   }
+}
+
+.sort-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.sortDropdown {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--container-color);
 }
