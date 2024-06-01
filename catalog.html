@@ -218,7 +218,7 @@
                 .then(response => response.json())
                 .then(products => {
                     const productsContainer = document.getElementById('products-container');
-                    products.forEach(product => {
+                    products.forEach((product, index) => {
                         const productCard = document.createElement('article');
                         productCard.classList.add('featured__card');
                         productCard.innerHTML = `
@@ -227,7 +227,7 @@
                                 <h3 class="featured__title">${product.title}</h3>
                             </div>
                             <div class="featured__button-container">
-                                <a href="product.html" class="button featured__button">ADD TO CART</a>
+                                <a href="product.html?json=${jsonFileName}&index=${index}" class="button featured__button">VIEW PRODUCT</a>
                             </div>
                         `;
                         productsContainer.appendChild(productCard);

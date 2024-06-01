@@ -16,7 +16,7 @@
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="assets/css/styles.css">
 
-    <title>Rolex Everose GMT-Master II - Luxury Time PCSZ</title>
+    <title id="product-title"></title>
 </head>
 <body>
     <!-- Modal structure -->
@@ -59,16 +59,22 @@
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
                     <li class="nav__item">
-                        <a href="index.html#home" class="nav__link">Home</a>
+                        <a href="#home" class="nav__link active-link">Home</a>
                     </li>
-                    <li class="nav__item">
-                        <a href="index.html#featured" class="nav__link">Featured</a>
+                    <li class="nav__item dropdown">
+                        <a href="#" class="nav__link dropdown__link">Catalog <i class='bx bx-chevron-down'></i></a>
+                        <ul class="dropdown__menu">
+                            <li><a href="/catalog.html?products=rolex.json" class="dropdown__item">Rolex</a></li>
+                            <li><a href="/catalog.html?products=piguet.json" class="dropdown__item">Audemars Piguet</a></li>
+                            <li><a href="/catalog.html?products=patek.json" class="dropdown__item">Patek Philippe</a></li>
+                            <li><a href="/catalog.html?products=cartier.json" class="dropdown__item">Cartier</a></li>
+                        </ul>
                     </li>
                     <li class="nav__item">
                         <a href="http://luxurytimepczs.printify.me" class="nav__link">Shop</a>
                     </li>
                 </ul>
-
+        
                 <div class="nav__close" id="nav-close">
                     <i class='bx bx-x'></i>
                 </div>
@@ -89,23 +95,14 @@
         <section class="product section container">
             <div class="product__container grid">
                 <div class="product__img-wrapper">
-                    <img src="assets/img/featured3.png" alt="Rolex Everose GMT-Master II" class="product__img">
+                    <img id="product-img" src="" alt="Product Image" class="product__img">
                 </div>
                 
                 <div class="product__details">
-                    <h1 class="product__title">Rolex Everose GMT-Master II 40 Watch</h1>
-                    <span class="product__price">👁️ <strong>23 people</strong> are viewing this right now</span>
-                    <p class="product__description">
-                        This Rolex Everose GMT-Master II 40 Watch features a black and brown bezel, black dial, and an oyster bracelet. It combines functionality and style, perfect for those who appreciate fine craftsmanship and elegant design.
-                    </p>
-                    <ul class="product__features">
-                        <li>Reference: 126715CHNR</li>
-                        <li>Bezel: Black and Brown</li>
-                        <li>Dial: Black</li>
-                        <li>Bracelet: Oyster</li>
-                        <li>Material: Everose Gold</li>
-                        <li>Case Size: 40mm</li>
-                    </ul>
+                    <h1 id="product-name" class="product__title"></h1>
+                    <span id="product-viewers" class="product__price">👁️ <strong>23 people</strong> are viewing this right now</span>
+                    <p id="product-description" class="product__description"></p>
+                    <ul id="product-features" class="product__features"></ul>
 
                     <button class="button price-on-request-button">PRICE ON REQUEST</button>
                 </div>
@@ -173,5 +170,42 @@
 
     <!--=============== MAIN JS ===============-->
     <script src="assets/js/main.js"></script>
+
+    <!--=============== PRODUCT JS ===============-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('index');
+            const jsonFileName = urlParams.get('json') || 'products.json'; // Default to 'products.json' if no param is provided
+
+            if (productId !== null) {
+                fetch(jsonFileName)
+                    .then(response => response.json())
+                    .then(products => {
+                        const product = products[productId];
+                        if (product) {
+                            console.log('Product:', product);
+                            document.getElementById('product-title').textContent = `${product.title} - Luxury Time PCSZ`;
+                            document.getElementById('product-img').src = product.imageUrl;
+                            document.getElementById('product-name').textContent = product.title;
+                            document.getElementById('product-description').textContent = product.description;
+                            
+                            const featuresList = document.getElementById('product-features');
+                            featuresList.innerHTML = '';
+                            product.features.forEach(feature => {
+                                const li = document.createElement('li');
+                                li.textContent = feature;
+                                featuresList.appendChild(li);
+                            });
+                        } else {
+                            console.error('Product not found');
+                        }
+                    })
+                    .catch(error => console.error('Error loading product:', error));
+            } else {
+                console.error('No product ID found in URL');
+            }
+        });
+    </script>
 </body>
 </html>

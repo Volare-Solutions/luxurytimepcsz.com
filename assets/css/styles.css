@@ -1222,7 +1222,7 @@ body.dark-theme {
 
 .product__img {
   width: 100%;
-  max-width: 500px; /* Ensure the image doesn't exceed a reasonable size */
+  max-width: 350px; /* Ensure the image doesn't exceed a reasonable size */
 }
 
 .product__details {
