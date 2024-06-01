@@ -17,6 +17,66 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 
     <title>Rolex Catalog - Luxury Time PCSZ</title>
+
+    <style>
+        .featured__container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .featured__card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            background-color: var(--container-color);
+        }
+        .featured__card:hover {
+            transform: translateY(-10px);
+        }
+        .featured__img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .featured__data {
+            padding: 15px;
+            text-align: center;
+        }
+        .featured__title {
+            font-size: var(--h3-font-size);
+            font-weight: var(--font-bold);
+            color: var(--title-color);
+            text-transform: uppercase;
+            margin-bottom: var(--mb-1);
+        }
+        .button {
+            display: inline-block;
+            background-color: var(--button-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: var(--button-color-alt);
+        }
+        .featured__button-container {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            transition: bottom 0.3s ease;
+        }
+        .featured__card:hover .featured__button-container {
+            bottom: 15px;
+        }
+    </style>
 </head>
 <body>
     <!--==================== HEADER ====================-->
@@ -61,51 +121,8 @@
               Rolex
           </h2>
 
-          <div class="featured__container grid">
-              <article class="featured__card">
-                  <span class="featured__tag">Sale</span>
-                  
-                  <img src="assets/img/featured1.png" alt="" class="featured__img">
-                  
-                  <div class="featured__data">
-                      <h3 class="featured__title">Jazzmaster</h3>
-                      <span class="featured__price">$1050</span>
-                  </div>
-                  
-                  <a href="product.html">
-                      <button class="button featured__button">ADD TO CART</button>
-                  </a>
-              </article>
-              
-              <article class="featured__card">
-                  <span class="featured__tag">Sale</span>
-                  
-                  <img src="assets/img/featured2.png" alt="" class="featured__img">
-                  
-                  <div class="featured__data">
-                      <h3 class="featured__title">Ingersoll</h3>
-                      <span class="featured__price">$250</span>
-                  </div>
-                  
-                  <a href="product.html">
-                      <button class="button featured__button">ADD TO CART</button>
-                  </a>
-              </article>
-
-              <article class="featured__card">
-                  <span class="featured__tag">Sale</span>
-                  
-                  <img src="assets/img/featured3.png" alt="" class="featured__img">
-                  
-                  <div class="featured__data">
-                      <h3 class="featured__title">Rose gold</h3>
-                      <span class="featured__price">$890</span>
-                  </div>
-                  
-                  <a href="product.html">
-                      <button class="button featured__button">ADD TO CART</button>
-                  </a>
-              </article>
+          <div class="featured__container grid" id="products-container">
+              <!-- Products will be inserted here by JavaScript -->
           </div>
       </section>
     </main>
@@ -170,5 +187,31 @@
 
     <!--=============== MAIN JS ===============-->
     <script src="assets/js/main.js"></script>
+
+    <!--=============== LOAD JSON AND DISPLAY PRODUCTS ===============-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('rolex.json')
+                .then(response => response.json())
+                .then(products => {
+                    const productsContainer = document.getElementById('products-container');
+                    products.forEach(product => {
+                        const productCard = document.createElement('article');
+                        productCard.classList.add('featured__card');
+                        productCard.innerHTML = `
+                            <img src="${product.imageUrl}" alt="${product.title}" class="featured__img">
+                            <div class="featured__data">
+                                <h3 class="featured__title">${product.title}</h3>
+                            </div>
+                            <div class="featured__button-container">
+                                <a href="product.html" class="button featured__button">ADD TO CART</a>
+                            </div>
+                        `;
+                        productsContainer.appendChild(productCard);
+                    });
+                })
+                .catch(error => console.error('Error loading the products:', error));
+        });
+    </script>
 </body>
 </html>
