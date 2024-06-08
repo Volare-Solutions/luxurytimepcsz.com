@@ -17,7 +17,7 @@
   --border-color: hsl(35, 20%, 85%); /* Softer light brown for borders */
 
   /*========== Font and typography ==========*/
-  --body-font: 'Georgia', serif;
+  --body-font: 'Playfair Display', serif;
   --biggest-font-size: 2rem;
   --h1-font-size: 1.5rem;
   --h2-font-size: 1.25rem;
@@ -1254,7 +1254,7 @@ body.dark-theme {
   list-style: none;
   font-size: var(--normal-font-size);
   color: var(--text-color-light);
-  margin-bottom: var(--mb-2);
+  margin-bottom: var (--mb-2);
 }
 
 .product__features li {
@@ -1272,6 +1272,27 @@ body.dark-theme {
 
 .product__button:hover {
   background-color: var(--button-color-alt);
+}
+
+/* Responsive layout for mobile */
+@media screen and (max-width: 767px) {
+  .product__container {
+    margin-top: auto;
+    grid-template-columns: 1fr;
+    gap: 4rem; /* Adjust the gap for mobile */
+  }
+
+  .product__img-wrapper {
+    order: 1;
+  }
+
+  .product__details {
+    order: 2;
+  }
+
+  .product__img {
+    max-width: 200px; /* Smaller image size for mobile */
+  }
 }
 
 /* Modal styles */

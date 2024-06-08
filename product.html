@@ -184,7 +184,6 @@
                     .then(products => {
                         const product = products[productId];
                         if (product) {
-                            console.log('Product:', product);
                             document.getElementById('product-title').textContent = `${product.title} - Luxury Time PCSZ`;
                             document.getElementById('product-img').src = product.imageUrl;
                             document.getElementById('product-name').textContent = product.title;
