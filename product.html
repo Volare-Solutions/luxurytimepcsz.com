@@ -172,12 +172,13 @@
     <script src="assets/js/main.js"></script>
 
     <!--=============== PRODUCT JS ===============-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pica/5.0.0/pica.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const productId = urlParams.get('index');
             const jsonFileName = urlParams.get('json') || 'products.json'; // Default to 'products.json' if no param is provided
-
+    
             if (productId !== null) {
                 fetch(jsonFileName)
                     .then(response => response.json())
@@ -185,7 +186,9 @@
                         const product = products[productId];
                         if (product) {
                             document.getElementById('product-title').textContent = `${product.title} - Luxury Time PCSZ`;
-                            document.getElementById('product-img').src = product.imageUrl;
+                            processImage(product.imageUrl).then(processedImageUrl => {
+                                document.getElementById('product-img').src = processedImageUrl;
+                            });
                             document.getElementById('product-name').textContent = product.title;
                             document.getElementById('product-description').textContent = product.description;
                             
@@ -205,6 +208,43 @@
                 console.error('No product ID found in URL');
             }
         });
-    </script>
+    
+        function processImage(imageUrl) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = "Anonymous"; // This enables cross-origin image processing
+                img.src = imageUrl;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+    
+                    const targetCanvas = document.createElement('canvas');
+                    const targetCtx = targetCanvas.getContext('2d');
+                    targetCanvas.width = canvas.width * 2; // Increase resolution
+                    targetCanvas.height = canvas.height * 2;
+    
+                    pica().resize(canvas, targetCanvas, {
+                        quality: 3,
+                        unsharpAmount: 80,
+                        unsharpRadius: 0.6,
+                        unsharpThreshold: 2
+                    }).then(result => {
+                        return pica().toBlob(result, 'image/png', 0.90);
+                    }).then(blob => {
+                        const newImg = document.createElement('img');
+                        newImg.src = URL.createObjectURL(blob);
+                        newImg.onload = () => {
+                            // Use this processed image
+                            resolve(newImg.src);
+                        };
+                    }).catch(err => reject(err));
+                };
+                img.onerror = reject;
+            });
+        }
+    </script>    
 </body>
 </html>
