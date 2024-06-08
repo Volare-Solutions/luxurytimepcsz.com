@@ -16,6 +16,8 @@
         <!--=============== CSS ===============-->
         <link rel="stylesheet" href="assets/css/styles.css">
 
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
         <title>Luxury Time PCSZ</title>
     </head>
     <body>
@@ -179,15 +181,14 @@
                         <a href="https://github.com/msafeerhussain" target="_blank" class="home__social-link">
                             Github
                         </a>
-                    </div>
-     -->
+                    </div>-->
                     <div class="home__data">
                         <h1 class="home__title">NEW WATCH <br> COLLECTIONS B720</h1>
                         <p class="home__description">
                             Latest arrival of the new imported watches of the B720 series, 
                             with a modern and resistant design.
                         </p>
-                        <span class="home__price">$1245</span>
+                        <!-- <span class="home__price">$1245</span> -->
 
                         <div class="home__btns">
                             <a href="/catalog.html" class="button button--gray button--small">
@@ -195,7 +196,7 @@
                             </a>
 
                             <a href="/product.html">
-                                <button class="button home__button">ADD TO CART</button>
+                                <button class="button home__button">View Product</button>
                             </a>
                         </div>
                     </div>
@@ -207,54 +208,10 @@
                 <h2 class="section__title">
                     Featured
                 </h2>
-
-                <div class="featured__container grid">
-                    <article class="featured__card">
-                        <span class="featured__tag">Sale</span>
-                        
-                        <img src="assets/img/featured1.png" alt="" class="featured__img">
-                        
-                        <div class="featured__data">
-                            <h3 class="featured__title">Jazzmaster</h3>
-                            <span class="featured__price">$1050</span>
-                        </div>
-                        
-                        <a href="product.html">
-                            <button class="button featured__button">ADD TO CART</button>
-                        </a>
-                    </article>
-                    
-                    <article class="featured__card">
-                        <span class="featured__tag">Sale</span>
-                        
-                        <img src="assets/img/featured2.png" alt="" class="featured__img">
-                        
-                        <div class="featured__data">
-                            <h3 class="featured__title">Ingersoll</h3>
-                            <span class="featured__price">$250</span>
-                        </div>
-                        
-                        <a href="product.html">
-                            <button class="button featured__button">ADD TO CART</button>
-                        </a>
-                    </article>
-
-                    <article class="featured__card">
-                        <span class="featured__tag">Sale</span>
-                        
-                        <img src="assets/img/featured3.png" alt="" class="featured__img">
-                        
-                        <div class="featured__data">
-                            <h3 class="featured__title">Rose gold</h3>
-                            <span class="featured__price">$890</span>
-                        </div>
-                        
-                        <a href="product.html">
-                            <button class="button featured__button">ADD TO CART</button>
-                        </a>
-                    </article>
+                <div class="featured__container grid" id="featured-container">
+                    <!-- Watches will be inserted here by JavaScript -->
                 </div>
-            </section>
+            </section>         
 
             <!--==================== STORY ====================-->
             <section class="story section container">
@@ -439,7 +396,7 @@
                 
                 <div class="new__container">
                     <div class="swiper new-swiper">
-                        <div class="swiper-wrapper">
+                        <div class="swiper-wrapper" id="new-container">
                             <article class="new__card swiper-slide">
                                 <span class="new__tag">New</span>
         
@@ -599,5 +556,62 @@
 
         <!--=============== MAIN JS ===============-->
         <script src="assets/js/main.js"></script>
+
+        <!--=============== FEATURED PRODUCTS JS ===============-->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                fetch('rolex.json')
+                    .then(response => response.json())
+                    .then(products => {
+                        const featuredContainer = document.getElementById('featured-container');
+                        const rolexWatches = products.slice(0, 3); // Get the first three watches
+
+                        rolexWatches.forEach((product, index) => {
+                            const productCard = document.createElement('article');
+                            productCard.classList.add('featured__card');
+                            productCard.innerHTML = `
+                            <img src="${product.imageUrl}" alt="${product.title}" class="featured__img">
+                            <span class="featured__tag">New</span>
+                            <div class="featured__data">
+                                <h3 class="featured__title">${product.title}</h3>
+                            </div>
+                            <br/>
+                            <a href="product.html?index=${index}">
+                                <button class="button featured__button">View Product</button>
+                            </a>
+                            `;
+                            featuredContainer.appendChild(productCard);
+                        });
+                    })
+                    .catch(error => console.error('Error loading products:', error));
+
+                // fetch('piguet.json')
+                //     .then(response => response.json())
+                //     .then(products => {
+                //         const featuredContainer = document.getElementById('new-container');
+                //         const rolexWatches = products.slice(0, 3);
+
+                //         rolexWatches.forEach((product, index) => {
+                //             const productCard = document.createElement('article');
+                //             productCard.classList.add('featured__card');
+                //             productCard.innerHTML = `
+                //             <article class="new__card swiper-slide">
+                //                 <span class="new__tag">New</span>
+
+                //                 <img src="${product.imageUrl}" alt="${product.title}" class="new__img">
+
+                //                 <div class="new__data">
+                //                     <h3 class="new__title">${product.title}</h3>
+                //                 </div>
+
+                //                 <button class="button new__button">VIEW PRODUCT</button>
+                //             </article>
+                //             `;
+                //             featuredContainer.appendChild(productCard);
+                //         });
+                //     })
+                //     .catch(error => console.error('Error loading products:', error));
+            });
+        </script>
     </body>
 </html>
