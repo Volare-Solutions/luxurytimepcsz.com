@@ -435,6 +435,10 @@ body.dark-theme {
 .featured__title {
   text-transform: uppercase;
   margin-bottom: var(--mb-0-75);
+  padding: 0 1rem; /* Add padding to the sides */
+  text-align: center; /* Center align the text */
+  max-width: 90%; /* Set a maximum width */
+  margin: 0 auto; /* Center the title horizontally */
 }
 
 .featured__price {
@@ -1221,6 +1225,7 @@ body.dark-theme {
 }
 
 .product__img {
+  image-rendering: -webkit-optimize-contrast;
   width: 100%;
   max-width: 350px; /* Ensure the image doesn't exceed a reasonable size */
 }
