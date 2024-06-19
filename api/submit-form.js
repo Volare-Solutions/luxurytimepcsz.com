@@ -7,7 +7,7 @@ export default async (req, res) => {
     }
 
     const client = new Client({
-        connectionString: "postgres://default:Hrokw7Ov3dAI@ep-steep-band-a4f31rt5-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require",
+        connectionString: process.env.DATABASE_URL,
         ssl: {
             rejectUnauthorized: false
         }
