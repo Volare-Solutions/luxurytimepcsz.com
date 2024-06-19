@@ -17,6 +17,57 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 
     <title id="product-title"></title>
+    <style>
+        .toast {
+            visibility: hidden;
+            max-width: 300px;
+            margin: auto;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            position: fixed;
+            z-index: 1;
+            top: 20px;
+            right: 20px;
+            font-size: 17px;
+            padding: 10px;
+        }
+
+        .toast.success {
+            background-color: #4CAF50;
+        }
+
+        .toast.error {
+            background-color: #f44336;
+        }
+
+        .toast.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {top: 0; opacity: 0;} 
+            to {top: 20px; opacity: 1;}
+        }
+
+        @keyframes fadein {
+            from {top: 0; opacity: 0;}
+            to {top: 20px; opacity: 1;}
+        }
+
+        @-webkit-keyframes fadeout {
+            from {top: 20px; opacity: 1;} 
+            to {top: 0; opacity: 0;}
+        }
+
+        @keyframes fadeout {
+            from {top: 20px; opacity: 1;}
+            to {top: 0; opacity: 0;}
+        }
+    </style>
 </head>
 <body>
     <!-- Modal structure -->
@@ -48,6 +99,9 @@
           </form>
       </div>
     </div>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast"></div>
 
     <!--==================== HEADER ====================-->
     <header class="header" id="header">
@@ -246,6 +300,17 @@
             });
         }
 
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.className = `toast ${type} show`;
+            toast.innerHTML = message;
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        function clearForm() {
+            document.getElementById('priceRequestForm').reset();
+        }
+
         document.getElementById('priceRequestForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const formData = new FormData(this);
@@ -265,12 +330,13 @@
                 return response.json();
             })
             .then(data => {
-                alert('Form submitted successfully!');
+                clearForm();
+                showToast('Form submitted successfully!', 'success');
                 console.log('Success:', data);
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('There was a problem with the form submission.');
+                showToast('There was a problem with the form submission.', 'error');
             });
         });
     </script>    
