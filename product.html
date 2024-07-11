@@ -75,6 +75,7 @@
       <div class="modal-content">
           <span class="close">&times;</span>
           <form id="priceRequestForm">
+              <input type="hidden" id="pieceID" name="pieceID">
               <div class="form-group">
                   <label for="firstName">First Name <span>*</span></label>
                   <input type="text" id="firstName" name="firstName" placeholder="Your First Name" required>
@@ -245,7 +246,10 @@
                             });
                             document.getElementById('product-name').textContent = product.title;
                             document.getElementById('product-description').textContent = product.description;
-                            
+
+                            // Set the pieceID hidden input field to the product title
+                            document.getElementById('pieceID').value = product.title;
+
                             const featuresList = document.getElementById('product-features');
                             featuresList.innerHTML = '';
                             product.features.forEach(feature => {
