@@ -84,6 +84,31 @@
         .featured__card:hover .featured__button-container {
             opacity: 1;
         }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin-top: 42px;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination li a {
+            text-decoration: none;
+            color: var(--title-color);
+            padding: 5px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .pagination li a:hover, .pagination li.active a {
+            background-color: var(--button-color);
+            color: white;
+        }
+        .pagination li.disabled a {
+            color: var(--border-color);
+        }
     </style> 
 </head>
 <body>
@@ -137,6 +162,7 @@
           <div class="featured__container grid" id="products-container">
               <!-- Products will be inserted here by JavaScript -->
           </div>
+          <ul class="pagination" id="pagination"></ul>
       </section>
     </main>
 
@@ -206,6 +232,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const jsonFileName = urlParams.get('products') || 'products.json'; // Default to 'products.json' if no param is provided
+            const currentPage = parseInt(urlParams.get('page')) || 1;
 
             // Set the title based on the JSON file name
             const sectionTitle = document.getElementById('section-title');
@@ -222,22 +249,91 @@
                 .then(response => response.json())
                 .then(products => {
                     const productsContainer = document.getElementById('products-container');
-                    products.forEach((product, index) => {
-                        const productCard = document.createElement('article');
-                        productCard.classList.add('featured__card');
-                        productCard.innerHTML = `
-                            <a href="product.html?json=${jsonFileName}&index=${index}">
-                                <img src="${product.imageUrl}" alt="${product.title}" class="featured__img">
-                                <div class="featured__data">
-                                    <h3 class="featured__title">${product.title}</h3>
-                                </div>
-                                <div class="featured__button-container">
-                                    <a href="product.html?json=${jsonFileName}&index=${index}" class="button featured__button">VIEW PRODUCT</a>
-                                </div>
-                            </a>
-                        `;
-                        productsContainer.appendChild(productCard);
-                    });
+                    const itemsPerPage = 21;
+                    const totalPages = Math.ceil(products.length / itemsPerPage);
+
+                    // Pagination logic
+                    function renderPagination() {
+                        const paginationContainer = document.getElementById('pagination');
+                        paginationContainer.innerHTML = '';
+
+                        const createPageItem = (page, label, disabled = false) => {
+                            const li = document.createElement('li');
+                            if (disabled) {
+                                li.classList.add('disabled');
+                            } else if (page === currentPage) {
+                                li.classList.add('active');
+                            }
+                            const a = document.createElement('a');
+                            a.href = `?products=${jsonFileName}&page=${page}`;
+                            a.textContent = label;
+                            li.appendChild(a);
+                            paginationContainer.appendChild(li);
+                        };
+
+                        createPageItem(currentPage - 1, '«', currentPage === 1);
+
+                        if (totalPages <= 5) {
+                            for (let i = 1; i <= totalPages; i++) {
+                                createPageItem(i, i);
+                            }
+                        } else {
+                            if (currentPage > 3) {
+                                createPageItem(1, 1);
+                                if (currentPage > 4) {
+                                    const ellipsis = document.createElement('li');
+                                    ellipsis.textContent = '...';
+                                    paginationContainer.appendChild(ellipsis);
+                                }
+                            }
+
+                            const start = Math.max(2, currentPage - 1);
+                            const end = Math.min(totalPages - 1, currentPage + 1);
+
+                            for (let i = start; i <= end; i++) {
+                                createPageItem(i, i);
+                            }
+
+                            if (currentPage < totalPages - 2) {
+                                if (currentPage < totalPages - 3) {
+                                    const ellipsis = document.createElement('li');
+                                    ellipsis.textContent = '...';
+                                    paginationContainer.appendChild(ellipsis);
+                                }
+                                createPageItem(totalPages, totalPages);
+                            }
+                        }
+
+                        createPageItem(currentPage + 1, '»', currentPage === totalPages);
+                    }
+
+                    function renderProducts() {
+                        productsContainer.innerHTML = '';
+
+                        const startIndex = (currentPage - 1) * itemsPerPage;
+                        const endIndex = startIndex + itemsPerPage;
+                        const productsToShow = products.slice(startIndex, endIndex);
+
+                        productsToShow.forEach((product, index) => {
+                            const productCard = document.createElement('article');
+                            productCard.classList.add('featured__card');
+                            productCard.innerHTML = `
+                                <a href="product.html?json=${jsonFileName}&index=${index + startIndex}">
+                                    <img src="${product.imageUrl.replace('{width}', '180')}" alt="${product.title}" class="featured__img">
+                                    <div class="featured__data">
+                                        <h3 class="featured__title">${product.title}</h3>
+                                    </div>
+                                    <div class="featured__button-container">
+                                        <a href="product.html?json=${jsonFileName}&index=${index + startIndex}" class="button featured__button">VIEW PRODUCT</a>
+                                    </div>
+                                </a>
+                            `;
+                            productsContainer.appendChild(productCard);
+                        });
+                    }
+
+                    renderPagination();
+                    renderProducts();
                 })
                 .catch(error => console.error('Error loading the products:', error));
         });
