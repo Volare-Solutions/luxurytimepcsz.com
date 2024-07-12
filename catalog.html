@@ -226,13 +226,15 @@
                         const productCard = document.createElement('article');
                         productCard.classList.add('featured__card');
                         productCard.innerHTML = `
-                            <img src="${product.imageUrl}" alt="${product.title}" class="featured__img">
-                            <div class="featured__data">
-                                <h3 class="featured__title">${product.title}</h3>
-                            </div>
-                            <div class="featured__button-container">
-                                <a href="product.html?json=${jsonFileName}&index=${index}" class="button featured__button">VIEW PRODUCT</a>
-                            </div>
+                            <a href="product.html?json=${jsonFileName}&index=${index}">
+                                <img src="${product.imageUrl}" alt="${product.title}" class="featured__img">
+                                <div class="featured__data">
+                                    <h3 class="featured__title">${product.title}</h3>
+                                </div>
+                                <div class="featured__button-container">
+                                    <a href="product.html?json=${jsonFileName}&index=${index}" class="button featured__button">VIEW PRODUCT</a>
+                                </div>
+                            </a>
                         `;
                         productsContainer.appendChild(productCard);
                     });

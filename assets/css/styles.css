@@ -305,17 +305,18 @@ body.dark-theme {
 }
 
 .home__img {
-  width: 240px;
+  width: 75% !important; /* Scale the image to 75% of its original size */
+  height: auto; /* Maintain the aspect ratio */
 }
 
 .home__img-bg {
   background-color: var(--first-color);
-  width: 258px;
-  height: 430px;
+  width: 50%; /* Adjust the width to fit the image */
+  height: auto; /* Let the height adjust automatically */
   padding-bottom: 2rem;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center; /* Center the image vertically */
   justify-self: flex-end;
   transform: translateX(1.5rem);
 }
@@ -1382,6 +1383,45 @@ body.dark-theme {
 
 .modal-button:hover {
   background-color: var(--button-color-alt);
+}
+
+/* Modal styles for dark mode */
+body.dark-theme .modal-content {
+  background-color: var(--container-color);
+  color: var(--title-color);
+}
+
+body.dark-theme .modal-button {
+  background-color: var(--button-color);
+  color: #FFF;
+}
+
+body.dark-theme .modal-button:hover {
+  background-color: var(--button-color-alt);
+}
+
+body.dark-theme .form-group input,
+body.dark-theme .form-group textarea {
+  background-color: var(--body-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+body.dark-theme .form-group label {
+  color: var(--title-color);
+}
+
+body.dark-theme .form-group label span {
+  color: var(--first-color);
+}
+
+body.dark-theme .close {
+  color: var(--text-color-light);
+}
+
+body.dark-theme .close:hover,
+body.dark-theme .close:focus {
+  color: var(--title-color);
 }
 
 /* Responsive layout for mobile */
