@@ -354,10 +354,8 @@
                     <div>
                         <h2 class="newsletter__title">Subscribe Our <br> Newsletter</h2>
                         <p class="newsletter__description">
-                            Don't miss out on your discounts. Subscribe to our email 
-                            newsletter to get the best offers, discounts, coupons, 
-                            gifts and much more.
-                        </p>
+                            Stay up to date with our latest product releases and be the first to know about exclusive raffle offerings. Subscribe to our email newsletter for updates, special promotions, and more.
+                        </p>                        
                     </div>
 
                     <form action="" class="newsletter__subscribe">
@@ -480,85 +478,57 @@
                     })
                     .catch(error => console.error('Error loading rolex products:', error));
 
-                    fetch('cartier.json')
-                        .then(response => response.json())
-                        .then(products => {
-                            const cartierContainer = document.getElementById('cartier-container');
-                            const cartierWatches = products.slice(0, 6); // Get the first six watches
+                fetch('cartier.json')
+                    .then(response => response.json())
+                    .then(products => {
+                        const cartierContainer = document.getElementById('cartier-container');
+                        const cartierWatches = products.slice(0, 6); // Get the first six watches
 
-                            cartierWatches.forEach((product, index) => {
-                                const productCard = document.createElement('article');
-                                productCard.classList.add('products__card');
-                                productCard.innerHTML = `
-                                    <img src="${product.imageUrl}" alt="${product.title}" class="products__img">
-                                    <h3 class="products__title">${product.title}</h3>
-                                    <a href="product.html?json=cartier.json&index=${index}">
-                                        <button class="products__button">
-                                            <i class='bx bx-heart'></i>
-                                        </button>
-                                    </a>
-                                `;
-                                cartierContainer.appendChild(productCard);
-                            });
-                        })
-                        .catch(error => console.error('Error loading cartier products:', error));
+                        cartierWatches.forEach((product, index) => {
+                            const productCard = document.createElement('article');
+                            productCard.classList.add('products__card');
+                            productCard.innerHTML = `
+                                <img src="${product.imageUrl}" alt="${product.title}" class="products__img">
+                                <h3 class="products__title">${product.title}</h3>
+                                <a href="product.html?json=cartier.json&index=${index}">
+                                    <button class="products__button">
+                                        <i class='bx bx-heart'></i>
+                                    </button>
+                                </a>
+                            `;
+                            cartierContainer.appendChild(productCard);
+                        });
+                    })
+                    .catch(error => console.error('Error loading cartier products:', error));
 
-                    fetch('patek.json')
-                        .then(response => response.json())
-                        .then(products => {
-                            const newContainer = document.getElementById('new-container');
-                            // Select specific indexes (1, 2, 4, and 5)
-                            const selectedIndexes = [1, 2, 4, 5];
-                            const selectedProducts = selectedIndexes.map(index => products[index]);
+                fetch('patek.json')
+                    .then(response => response.json())
+                    .then(products => {
+                        const newContainer = document.getElementById('new-container');
+                        // Select specific indexes (1, 2, 4, and 5)
+                        const selectedIndexes = [1, 2, 4, 5];
+                        const selectedProducts = selectedIndexes.map(index => products[index]);
 
-                            selectedProducts.forEach((product, index) => {
-                                const originalIndex = selectedIndexes[index];
-                                const productCard = document.createElement('article');
-                                productCard.classList.add('new__card', 'swiper-slide');
-                                productCard.innerHTML = `
-                                    <span class="new__tag">New</span>
-                                    <img src="${product.imageUrl}" alt="${product.title}" class="new__img">
-                                    <div class="new__data">
-                                        <h3 class="new__title">${product.title}</h3>
-                                    </div>
-                                    <a href="product.html?json=patek.json&index=${originalIndex}">
-                                        <button class="button new__button">
-                                            View Product
-                                        </button>
-                                    </a>
-                                `;
-                                newContainer.appendChild(productCard);
-                            });
-                        })
-                        .catch(error => console.error('Error loading patek products:', error));
-
-
-                // fetch('piguet.json')
-                //     .then(response => response.json())
-                //     .then(products => {
-                //         const featuredContainer = document.getElementById('new-container');
-                //         const rolexWatches = products.slice(0, 3);
-
-                //         rolexWatches.forEach((product, index) => {
-                //             const productCard = document.createElement('article');
-                //             productCard.classList.add('featured__card');
-                //             productCard.innerHTML = `
-                //             <article class="new__card swiper-slide">
-                //                 <span class="new__tag">New</span>
-
-                //                 <img src="${product.imageUrl}" alt="${product.title}" class="new__img">
-
-                //                 <div class="new__data">
-                //                     <h3 class="new__title">${product.title}</h3>
-                //                 </div>
-
-                //                 <button class="button new__button">VIEW PRODUCT</button>
-                //             </article>
-                //             `;
-                //             featuredContainer.appendChild(productCard);
-                //         });
-                //     })
-                //     .catch(error => console.error('Error loading products:', error));
+                        selectedProducts.forEach((product, index) => {
+                            const originalIndex = selectedIndexes[index];
+                            const productCard = document.createElement('article');
+                            productCard.classList.add('new__card', 'swiper-slide');
+                            productCard.innerHTML = `
+                                <span class="new__tag">New</span>
+                                <img src="${product.imageUrl}" alt="${product.title}" class="new__img">
+                                <div class="new__data">
+                                    <h3 class="new__title">${product.title}</h3>
+                                </div>
+                                <a href="product.html?json=patek.json&index=${originalIndex}">
+                                    <button class="button new__button">
+                                        View Product
+                                    </button>
+                                </a>
+                            `;
+                            newContainer.appendChild(productCard);
+                        });
+                    })
+                    .catch(error => console.error('Error loading patek products:', error));
             });
         </script>
     </body>
